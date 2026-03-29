@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu — My Octopus Dakhla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #060d1a;
+    --navy: #0b1a35;
+    --royal: #132d5e;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a0;
+    --gold-dim: rgba(201,168,76,0.15);
+    --sand: #f5e6c8;
+    --white: #f0ece4;
+    --text: #d4cfc5;
+    --text-dim: rgba(212,207,197,0.5);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Raleway', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Texture overlay */
+  body::before {
+    content:'';
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* HERO HEADER */
+  .hero {
+    text-align: center;
+    padding: 50px 0 20px;
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    display: block;
+    width: 120px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 25px auto 0;
+  }
+  .back-btn {
+    position: absolute;
+    top: 20px; left: 0;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  .back-btn:hover { opacity: 1; }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-top: 8px;
+    letter-spacing: 3px;
+  }
+
+  /* CATEGORY NAV */
+  .cat-nav {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 30px 0 10px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    position: sticky;
+    top: 0;
+    background: rgba(6,13,26,0.95);
+    backdrop-filter: blur(12px);
+    z-index: 50;
+    padding: 0 0 0 0;
+  }
+  .cat-nav::-webkit-scrollbar { display:none; }
+  .cat-nav a {
+    flex-shrink: 0;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+  .cat-nav a:hover, .cat-nav a.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* MENU CATEGORY */
+  .menu-category {
+    margin-top: 45px;
+    animation: revealUp 0.8s ease both;
+  }
+  @keyframes revealUp {
+    from { opacity:0; transform:translateY(30px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .cat-icon {
+    font-size: 1.6rem;
+    width: 48px; height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gold-dim);
+    border-radius: 14px;
+    flex-shrink: 0;
+  }
+  .cat-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .cat-note {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 20px;
+    padding-left: 64px;
+  }
+  .cat-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold-dim), transparent);
+    margin-bottom: 20px;
+  }
+
+  /* MENU ITEM */
+  .menu-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.3s;
+  }
+  .menu-item:last-child { border-bottom: none; }
+  .menu-item:hover {
+    background: rgba(201,168,76,0.03);
+    border-radius: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: -12px;
+    margin-right: -12px;
+  }
+  .item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--white);
+    flex: 1;
+  }
+  .item-dots {
+    flex: 1;
+    border-bottom: 1px dotted rgba(201,168,76,0.2);
+    min-width: 30px;
+    margin-bottom: 4px;
+  }
+  .item-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .item-desc {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+  .item-variants {
+    margin-top: 6px;
+    padding-left: 12px;
+  }
+  .item-variant {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    padding: 3px 0;
+  }
+  .variant-name {
+    font-size: 0.82rem;
+    color: var(--text);
+    font-style: italic;
+  }
+  .variant-price {
+    font-size: 0.85rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* FOOTER */
+  .menu-footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    letter-spacing: 4px;
+    font-weight: 300;
+  }
+  .footer-text {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 8px;
+    letter-spacing: 2px;
+  }
+  .footer-dakhla {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--gold-light);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* SCROLL TO TOP */
+  .scroll-top {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    width: 44px; height: 44px;
+    background: var(--gold);
+    color: var(--deep);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 90;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scroll-top.visible { opacity: 1; }
+  .scroll-top:hover { transform: translateY(-3px); }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .hero-title { font-size: 2.2rem; letter-spacing: 5px; }
+    .cat-name { font-size: 1.3rem; }
+    .cat-nav a { padding: 12px 12px; font-size: 0.65rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <div class="hero">
+    <a href="index.html" class="back-btn">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      Retour
+    </a>
+    <div class="hero-title">Menu</div>
+    <div class="hero-sub">My Octopus &#8212; Dakhla</div>
+  </div>
+
+  <!-- CATEGORY NAV -->
+  <nav class="cat-nav" id="catNav">
+    <a href="#froides">Entr&#233;es Froides</a>
+    <a href="#chaudes">Entr&#233;es Chaudes</a>
+    <a href="#fritures">Fritures</a>
+    <a href="#plancha">Plancha</a>
+    <a href="#specialites">Sp&#233;cialit&#233;s</a>
+    <a href="#paellas">Pa&#235;llas</a>
+    <a href="#pates">P&#226;tes</a>
+    <a href="#boucher">Boucher</a>
+    <a href="#pizzas">Pizzas</a>
+    <a href="#commande">Sur Commande</a>
+    <a href="#desserts">Desserts</a>
+    <a href="#supplements">Suppl&#233;ments</a>
+    <a href="#boissons">Boissons</a>
+  </nav>
+
+  <!-- ======================== ENTREES FROIDES ======================== -->
+  <section class="menu-category" id="froides">
+    <div class="cat-header">
+      <div class="cat-icon">&#129490;</div>
+      <div class="cat-name">Entr&#233;es Froides</div>
+    </div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Salade tomates et poivron grill&#233;</div>
+        <div class="item-dots"></div>
+        <div class="item-price">35 MAD</div>
+      </div>
+      <div class="item-desc">Laitue, tomates, poivron grill&#233;, oignons, olives noires</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Salade C&#233;sar</div>
+        <div class="item-dots"></div>
+        <div class="item-price">55 MAD</div>
+      </div>
+      <div class="item-desc">Laitue, tomates cerises, blanc de poulet, anchois, toaste, fromage, &#339;uf dur, sauce c&#233;sar</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Salade Poulpe fa&#231;on My Octopus</div>
+        <div class="item-dots"></div>
+        <div class="item-price">50 MAD</div>
+      </div>
+      <div class="item-desc">Poulpe, pommes de terre nouvelle, oignons, ail, sauce rouille</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Salade Ni&#231;oise</div>
+        <div class="item-dots"></div>
+        <div class="item-price">40 MAD</div>
+      </div>
+      <div class="item-desc">Laitue, tomate, poivron, concombre, pommes de terre, haricot vert, thon, oignons, &#339;uf dur, olives noires, vinaigrette</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Guacamole et crevettes</div>
+        <div class="item-dots"></div>
+        <div class="item-price">60 MAD</div>
+      </div>
+      <div class="item-desc">Crevettes roses, avocat, laitue, tomate, oignons</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Hu&#238;tres fra&#238;ches de Dakhla</div>
+        <div class="item-dots"></div>
+        <div class="item-price">55 MAD</div>
+      </div>
+      <div class="item-desc">6 pi&#232;ces</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Salade fruits de mer</div>
+        <div class="item-dots"></div>
+        <div class="item-price">70 MAD</div>
+      </div>
+      <div class="item-desc">Laitue, tomates cerises, crevettes, seiche, poulpe, avocat, ma&#239;s</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Anchois marin&#233;s</div>
+        <div class="item-dots"></div>
+        <div class="item-price">65 MAD</div>
+      </div>
+      <div class="item-desc">Anchois marin&#233;s, huile d&#8217;olive, citron</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Saumon fum&#233;</div>
+        <div class="item-dots"></div>
+        <div class="item-price">90 MAD</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== ENTREES CHAUDES ======================== -->
+  <section class="menu-category" id="chaudes">
+    <div class="cat-header">
+      <div class="cat-icon">&#127858;</div>
+      <div class="cat-name">Entr&#233;es Chaudes</div>
+    </div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Soupe chinoise</div>
+        <div class="item-dots"></div>
+        <div class="item-price">70 MAD</div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Crevettes PIL PIL</div>
+        <div class="item-dots"></div>
+        <div class="item-price">65 MAD</div>
+      </div>
+      <div class="item-desc">Crevettes, sauce tomate, tabasco</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Gratin fruits de mer</div>
+        <div class="item-dots"></div>
+        <div class="item-price">75 MAD</div>
+      </div>
+      <div class="item-desc">Crevettes, seiche, moules ou palourdes, poulpe, sauce cr&#232;me</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Octopus &#224; la proven&#231;ale</div>
+        <div class="item-dots"></div>
+        <div class="item-price">70 MAD</div>
+      </div>
+      <div class="item-desc">Poulpe, huile d&#8217;olive, ail, basilic, herbes de Provence</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Tortilla de patatas</div>
+        <div class="item-dots"></div>
+        <div class="item-price"></div>
+      </div>
+      <div class="item-variants">
+        <div class="item-variant"><span class="variant-name">Nature</span><span class="variant-price">50 MAD</span></div>
+        <div class="item-variant"><span class="variant-name">Au thon</span><span class="variant-price">55 MAD</span></div>
+        <div class="item-variant"><span class="variant-name">Au poulet</span><span class="variant-price">60 MAD</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== FRITURES ======================== -->
+  <section class="menu-category" id="fritures">
+    <div class="cat-header">
+      <div class="cat-icon">&#127844;</div>
+      <div class="cat-name">Nos Fritures</div>
+    </div>
+    <div class="cat-note">Accompagn&#233;es de riz et sauce tartare maison</div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Friture de calamar &#224; la romaine</div>
+        <div class="item-dots"></div>
+        <div class="item-price">110 MAD</div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Friture Royale</div>
+        <div class="item-dots"></div>
+        <div class="item-price">145 MAD</div>
+      </div>
+      <div class="item-desc">Solette, merlan, brochette de poisson, crevettes, calamar, gamba</div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Friture de sole</div>
+        <div class="item-dots"></div>
+        <div class="item-price">100 MAD</div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-row">
+        <div class="item-name">Friture de crevettes pan&#233;es</div>
+        <div class="item-dots"></div>
+        <div class="item-price">100 MAD</div>
+      </div>
+      <div class="item-desc">&#192; la chapelure japonaise</div>
+    </div>
+  </section>
+
+  <!-- ======================== PLANCHA ======================== -->
+  <section class="menu-category" id="plancha">
+    <div class="cat-header">
+      <div class="cat-icon">&#128293;</div>
+      <div class="cat-name">&#192; la Plancha</div>
+    </div>
+    <div class="cat-note">L&#233;gumes du jour avec riz ou pur&#233;e de pommes de terre</div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Pav&#233; de thon mi-cuit</div><div class="item-dots"></div><div class="item-price">100 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Pav&#233; d&#8217;espadon</div><div class="item-dots"></div><div class="item-price">100 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Filet de courbine</div><div class="item-dots"></div><div class="item-price">95 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Brochettes de poisson marin&#233;s</div><div class="item-dots"></div><div class="item-price">95 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Gamba entier</div><div class="item-dots"></div><div class="item-price">125 MAD</div></div>
+      <div class="item-desc">350 gr</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Calamar</div><div class="item-dots"></div><div class="item-price">110 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Filet de St. Pierre</div><div class="item-dots"></div><div class="item-price">110 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Filet de St. Pierre &#224; la cr&#232;me et champignons</div><div class="item-dots"></div><div class="item-price">120 MAD</div></div>
+      <div class="item-desc">Champignons frais</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Filet de St. Pierre cr&#232;me crevettes</div><div class="item-dots"></div><div class="item-price">130 MAD</div></div>
+      <div class="item-desc">Crevettes et champignons frais</div>
+    </div>
+  </section>
+
+  <!-- ======================== SPECIALITES ======================== -->
+  <section class="menu-category" id="specialites">
+    <div class="cat-header">
+      <div class="cat-icon">&#11088;</div>
+      <div class="cat-name">Nos Sp&#233;cialit&#233;s</div>
+    </div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Poulpe &#224; la galicienne fa&#231;on My Octopus</div><div class="item-dots"></div><div class="item-price">135 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Poisson au four &#224; la marocaine</div><div class="item-dots"></div><div class="item-price">115 MAD</div></div>
+      <div class="item-desc">Avec l&#233;gumes et riz</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Po&#234;le fruits de mer &#224; la proven&#231;ale</div><div class="item-dots"></div><div class="item-price">110 MAD</div></div>
+    </div>
+  </section>
+
+  <!-- ======================== PAELLAS ======================== -->
+  <section class="menu-category" id="paellas">
+    <div class="cat-header">
+      <div class="cat-icon">&#129385;</div>
+      <div class="cat-name">Nos Pa&#235;llas</div>
+    </div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Paella My Octopus</div><div class="item-dots"></div><div class="item-price">75 MAD</div></div>
+      <div class="item-desc">Prix par personne</div>
+    </div>
+  </section>
+
+  <!-- ======================== PATES ======================== -->
+  <section class="menu-category" id="pates">
+    <div class="cat-header">
+      <div class="cat-icon">&#127837;</div>
+      <div class="cat-name">Nos P&#226;tes</div>
+    </div>
+    <div class="cat-note">&#192; la cr&#232;me ou sauce tomate</div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Penne Arrabiata &#224; la sauce diable</div><div class="item-dots"></div><div class="item-price">55 MAD</div></div>
+      <div class="item-desc">Sauce tomate, basilic, olives noires, piquant, fromage</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Penne au Thon</div><div class="item-dots"></div><div class="item-price">60 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Tagliatelles aux crevettes</div><div class="item-dots"></div><div class="item-price">70 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Tagliatelles fruits de mer</div><div class="item-dots"></div><div class="item-price">75 MAD</div></div>
+      <div class="item-desc">Crevettes, seiche, poulpe, moules ou palourdes</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Spaghetti au poulet</div><div class="item-dots"></div><div class="item-price">65 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Tagliatelle au saumon fum&#233;</div><div class="item-dots"></div><div class="item-price">85 MAD</div></div>
+    </div>
+  </section>
+
+  <!-- ======================== BOUCHER ======================== -->
+  <section class="menu-category" id="boucher">
+    <div class="cat-header">
+      <div class="cat-icon">&#129385;</div>
+      <div class="cat-name">C&#244;t&#233; Boucher</div>
+    </div>
+    <div class="cat-note">Accompagn&#233;es de l&#233;gumes du jour, frites ou pur&#233;e</div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Filet de b&#339;uf sauce poivre vert</div><div class="item-dots"></div><div class="item-price">145 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Filet de b&#339;uf sauce aux champignons</div><div class="item-dots"></div><div class="item-price">145 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Filet de b&#339;uf sauce roquefort</div><div class="item-dots"></div><div class="item-price">160 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">&#201;minc&#233;s de b&#339;uf aux champignons frais</div><div class="item-dots"></div><div class="item-price">125 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">&#201;minc&#233;s de poulet aux champignons frais</div><div class="item-dots"></div><div class="item-price">95 MAD</div></div>
+    </div>
+  </section>
+
+  <!-- ======================== PIZZAS ======================== -->
+  <section class="menu-category" id="pizzas">
+    <div class="cat-header">
+      <div class="cat-icon">&#127829;</div>
+      <div class="cat-name">Nos Pizzas</div>
+    </div>
+    <div class="cat-note">&#192; la base sauce cr&#232;me ou sauce tomate</div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Margarita</div><div class="item-dots"></div><div class="item-price">55 MAD</div></div>
+      <div class="item-desc">Sauce tomate, mozzarella</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Thon</div><div class="item-dots"></div><div class="item-price">65 MAD</div></div>
+      <div class="item-desc">Mozzarella, poivron, oignon, origan</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Fruits de mer</div><div class="item-dots"></div><div class="item-price">75 MAD</div></div>
+      <div class="item-desc">Mozzarella, crevettes, seiche, moules, poulpe</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Aux 4 fromages</div><div class="item-dots"></div><div class="item-price">80 MAD</div></div>
+      <div class="item-desc">Cr&#232;me, mozzarella, edam, roquefort, parmesan</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">La Sicilienne</div><div class="item-dots"></div><div class="item-price">65 MAD</div></div>
+      <div class="item-desc">Mozzarella, sauce tomate, anchois, olives noires</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Pizza au saumon fum&#233;</div><div class="item-dots"></div><div class="item-price">90 MAD</div></div>
+      <div class="item-desc">Mozzarella, cr&#232;me, saumon fum&#233;, avocat</div>
+    </div>
+  </section>
+
+  <!-- ======================== SUR COMMANDE ======================== -->
+  <section class="menu-category" id="commande">
+    <div class="cat-header">
+      <div class="cat-icon">&#128212;</div>
+      <div class="cat-name">Sur Commande</div>
+    </div>
+    <div class="cat-note">Prix par personne</div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Tajine de viande aux pruneaux et amandes</div><div class="item-dots"></div><div class="item-price">130 MAD</div></div>
+      <div class="item-desc">Chamelle, b&#339;uf ou agneau</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Tajine de viande aux l&#233;gumes</div><div class="item-dots"></div><div class="item-price">120 MAD</div></div>
+      <div class="item-desc">Chamelle, b&#339;uf ou agneau</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Tajine de poulet au citron confit</div><div class="item-dots"></div><div class="item-price">120 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Pastilla fruits de mer</div><div class="item-dots"></div><div class="item-price">110 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Pastilla au poulet et amandes</div><div class="item-dots"></div><div class="item-price">110 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Sole meuni&#232;re</div><div class="item-dots"></div><div class="item-price">160 MAD</div></div>
+      <div class="item-desc">Avec l&#233;gumes et pur&#233;e</div>
+    </div>
+  </section>
+
+  <!-- ======================== DESSERTS ======================== -->
+  <section class="menu-category" id="desserts">
+    <div class="cat-header">
+      <div class="cat-icon">&#127856;</div>
+      <div class="cat-name">Desserts</div>
+    </div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Cr&#232;me br&#251;l&#233;e</div><div class="item-dots"></div><div class="item-price">35 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Fondant au chocolat</div><div class="item-dots"></div><div class="item-price">45 MAD</div></div>
+      <div class="item-desc">Chocolat couverture noire</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Omelette norv&#233;gienne</div><div class="item-dots"></div><div class="item-price">50 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Profiterole au chocolat</div><div class="item-dots"></div><div class="item-price">50 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Tiramisu</div><div class="item-dots"></div><div class="item-price">35 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Coupe de glace maison</div><div class="item-dots"></div><div class="item-price">45 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Tarte aux pommes avec glace vanille</div><div class="item-dots"></div><div class="item-price">55 MAD</div></div>
+    </div>
+  </section>
+
+  <!-- ======================== SUPPLEMENTS ======================== -->
+  <section class="menu-category" id="supplements">
+    <div class="cat-header">
+      <div class="cat-icon">&#10133;</div>
+      <div class="cat-name">Suppl&#233;ments</div>
+    </div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Frites</div><div class="item-dots"></div><div class="item-price">10 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Plat de garniture</div><div class="item-dots"></div><div class="item-price">15 MAD</div></div>
+      <div class="item-desc">P&#226;tes, riz ou l&#233;gumes</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Thon</div><div class="item-dots"></div><div class="item-price">15 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Sauce cr&#232;me aux champignons</div><div class="item-dots"></div><div class="item-price">15 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Sauce cr&#232;me aux crevettes et champignons</div><div class="item-dots"></div><div class="item-price">20 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Sauce au poivre vert</div><div class="item-dots"></div><div class="item-price">15 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Sauce roquefort</div><div class="item-dots"></div><div class="item-price">20 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Nuggets</div><div class="item-dots"></div><div class="item-price">30 MAD</div></div>
+    </div>
+  </section>
+
+  <!-- ======================== BOISSONS ======================== -->
+  <section class="menu-category" id="boissons">
+    <div class="cat-header">
+      <div class="cat-icon">&#127865;</div>
+      <div class="cat-name">Boissons</div>
+    </div>
+    <div class="cat-divider"></div>
+
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Jus d&#8217;orange nature</div><div class="item-dots"></div><div class="item-price">20 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Soda 33cl</div><div class="item-dots"></div><div class="item-price">15 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Eau min&#233;rale 50cl</div><div class="item-dots"></div><div class="item-price">12 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Eau gazeuse 25cl</div><div class="item-dots"></div><div class="item-price">15 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Oulmes Virgin Mojito / Tropicale 25cl</div><div class="item-dots"></div><div class="item-price">17 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Th&#233; glac&#233;</div><div class="item-dots"></div><div class="item-price">30 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Coca Cherry &amp; Vanilla &amp; Fanta Exotic</div><div class="item-dots"></div><div class="item-price">30 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Bi&#232;re 0.0%</div><div class="item-dots"></div><div class="item-price">40 MAD</div></div>
+    </div>
+    <div class="menu-item">
+      <div class="item-row"><div class="item-name">Caf&#233; espresso</div><div class="item-dots"></div><div class="item-price">20 MAD</div></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="menu-footer">
+    <div class="footer-logo">MY OCTOPUS</div>
+    <div class="footer-dakhla">Dakhla, Maroc</div>
+    <div class="footer-text">&#169; 2025 &#8212; TOUS DROITS R&#201;SERV&#201;S</div>
+  </div>
+
+</div>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<script>
+  // Scroll to top button visibility
+  window.addEventListener('scroll', function() {
+    var btn = document.getElementById('scrollTop');
+    if (window.scrollY > 400) {
+      btn.classList.add('visible');
+    } else {
+      btn.classList.remove('visible');
+    }
+  });
+
+  // Active nav link on scroll
+  var sections = document.querySelectorAll('.menu-category');
+  var navLinks = document.querySelectorAll('.cat-nav a');
+
+  window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(section) {
+      var sectionTop = section.offsetTop - 100;
+      if (window.scrollY >= sectionTop) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+        // Auto-scroll nav to active link
+        link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+  });
+
+  // Staggered animation on scroll
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  sections.forEach(function(section) {
+    section.style.animationPlayState = 'paused';
+    observer.observe(section);
+  });
+</script>
+
+</body>
+</html>
